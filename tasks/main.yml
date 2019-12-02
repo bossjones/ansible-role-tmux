@@ -1,3 +1,54 @@
 # -*- coding: utf-8 -*-
 # tasks for  ansible-role-tmux
 ---
+- name: Install/Setup tmux
+  package:
+    name: '{{ item }}'
+    state: latest
+  with_items:
+    - tmux
+    - xclip
+  when: ansible_os_family == "Debian"
+
+- name: Clone tmux config
+  git:
+    repo: https://github.com/gpakosz/.tmux
+    dest: "{{item.dir}}/.tmux"
+    version: "master"
+  become: yes
+  become_user: "{{item.user}}"
+  with_items: "{{bossjones__tmux__path_to_tmux_config}}"
+
+- name: Clone powerline fonts
+  git:
+    repo: https://github.com/powerline/fonts.git
+    dest: "{{item.dir}}/fonts"
+    version: "master"
+    depth: 1
+  become: yes
+  become_user: "{{item.user}}"
+  with_items: "{{bossjones__tmux__path_to_tmux_config}}"
+
+- name: bootstrap tmux.conf
+  shell: |
+            ln -s -f .tmux/.tmux.conf
+            cp .tmux/.tmux.conf.local .
+            chdir="{{item.dir}}"
+  become: yes
+  become_user: "{{item.user}}"
+  with_items: "{{bossjones__tmux__path_to_tmux_config}}"
+
+- name: Install powerline fonts
+  shell: |
+            # install
+            cd fonts
+            ./install.sh
+            # clean-up a bit
+            cd ..
+            rm -rf fonts
+            chdir="{{item.dir}}"
+  become: yes
+  become_user: "{{item.user}}"
+  with_items: "{{bossjones__tmux__path_to_tmux_config}}"
+
+

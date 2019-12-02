@@ -211,7 +211,7 @@ Vagrant.configure(2) do |config|
         v.name = settings[:hostname]
         # v.vm.forward_port 5901, 6901
 
-        v.gui = true
+        v.gui = false
         v.customize ['modifyvm', :id, '--memory', settings[:mem]]
         v.customize ['modifyvm', :id, '--cpus', settings[:cpu]]
       end

@@ -263,7 +263,7 @@ envrc: ## Global config for direnv. Copy envrc file to <PROJECT_ROOT>/.envrc
 
 .PHONY: run
 run:
-	ansible-playbook --ask-become-pass -i "localhost," -c local playbook.yml --extra-vars="bossjones__tmux__user=$(WHOAMI)"
+	ansible-playbook -i "localhost," -c local playbook.yml
 
 .PHONY: run-ubuntu
 run-ubuntu:

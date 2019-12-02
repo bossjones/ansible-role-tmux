@@ -2,3 +2,6 @@
 # default vars for  ansible-role-tmux
 ---
 # Suggested ansible variable namespace: behance__oh__my__bossjones__tmux___
+
+bossjones__tmux__path_to_tmux_config:
+  - { user: "vagrant", dir: "/home/vagrant" }
